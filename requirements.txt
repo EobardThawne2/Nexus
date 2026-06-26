@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+python-dotenv
+pydantic
+supabase
+psycopg2-binary
+agentfield
