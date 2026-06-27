@@ -6,6 +6,7 @@ from uuid import UUID
 class RegistrationRequest(BaseModel):
     github_username: str = Field(..., description='The GitHub username of the user.')
     linkedin_url: HttpUrl = Field(..., description='The LinkedIn profile URL of the user.')
+    resume_text: Optional[str] = None
 
 class RegistrationResponse(BaseModel):
     user_id: UUID

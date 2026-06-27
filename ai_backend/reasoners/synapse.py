@@ -9,10 +9,10 @@ SUPABASE_KEY = os.environ.get('SUPABASE_KEY', '')
 db = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 @agent.reasoner(name='synapse')
-async def execute_synapse(user_id: str, github_raw: dict, linkedin_raw: dict) -> SynapseSanitizedProfile:
-    emit_thought('SYNAPSE', user_id, 'Ingesting raw GitHub and LinkedIn data...')
-    system_prompt = "You are SYNAPSE, an expert technical recruiter AI. Analyze the provided raw GitHub metrics and LinkedIn history. Extract a unified list of sanitized_skills (e.g. ['Python', 'React', 'Docker']), write a compelling 2-sentence experience_summary summarizing their expertise, and map the raw metrics directly into the structured format required."
-    user_prompt = f'GitHub Data:\n{json.dumps(github_raw)}\n\nLinkedIn Data:\n{json.dumps(linkedin_raw)}'
+async def execute_synapse(user_id: str, github_raw: dict, linkedin_raw: dict, resume_text: str = None) -> SynapseSanitizedProfile:
+    emit_thought('SYNAPSE', user_id, 'Ingesting raw GitHub, LinkedIn, and Resume data...')
+    system_prompt = "You are SYNAPSE, an expert technical recruiter AI. Analyze the provided raw GitHub metrics, LinkedIn history, and Resume text. Extract a unified list of sanitized_skills (e.g. ['Python', 'React', 'Docker']), write a compelling 2-sentence experience_summary summarizing their expertise, and map the raw metrics directly into the structured format required."
+    user_prompt = f'GitHub Data:\n{json.dumps(github_raw)}\n\nLinkedIn Data:\n{json.dumps(linkedin_raw)}\n\nResume Text:\n{resume_text or "Not provided"}'
     emit_thought('SYNAPSE', user_id, 'Running cognitive profile sanitization protocol...')
     sanitized_profile = await agent.ai(system=system_prompt, user=user_prompt, schema=SynapseSanitizedProfile)
     emit_thought('SYNAPSE', user_id, f'Identified {len(sanitized_profile.sanitized_skills)} unique skills. Writing to persistent store.')

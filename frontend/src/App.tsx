@@ -9,6 +9,7 @@ import { Terms } from './pages/Terms';
 import { Dashboard } from './pages/Dashboard';
 import { AnalysisHistory } from './pages/AnalysisHistory';
 import { Settings } from './pages/Settings';
+import { HRDashboard } from './pages/HRDashboard';
 
 const pageTransition = {
   initial: { opacity: 0, y: 10, filter: 'blur(4px)' },
@@ -45,6 +46,7 @@ function App() {
             <Route path="/settings" element={<PageWrapper><Settings /></PageWrapper>} />
             <Route path="/privacy" element={<PageWrapper><PrivacyPolicy /></PageWrapper>} />
             <Route path="/terms" element={<PageWrapper><Terms /></PageWrapper>} />
+            <Route path="/hr-dashboard" element={<PageWrapper><HRDashboard /></PageWrapper>} />
           </Routes>
         </AnimatePresence>
       </main>

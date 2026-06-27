@@ -5,7 +5,9 @@ from uuid import uuid4
 from typing import Optional
 from dotenv import load_dotenv
 load_dotenv()
-from fastapi import BackgroundTasks, HTTPException, status
+from fastapi import BackgroundTasks, HTTPException, status, UploadFile, File
+import pypdf
+import io
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -46,7 +48,7 @@ async def process_registration_background(user_id: str, request: RegistrationReq
         _emit_gateway_thought(user_id, 'Scraping LinkedIn footprint...')
         linkedin_raw = scrape_linkedin(str(request.linkedin_url))
         _emit_gateway_thought(user_id, 'Handing off to SYNAPSE for profile sanitization...')
-        sanitized_profile = await execute_synapse(user_id=user_id, github_raw=github_raw, linkedin_raw=linkedin_raw)
+        sanitized_profile = await execute_synapse(user_id=user_id, github_raw=github_raw, linkedin_raw=linkedin_raw, resume_text=request.resume_text)
         _emit_gateway_thought(user_id, 'Handing off to CORTEX for matchmaking...')
         evaluation = await execute_cortex(user_id=user_id, profile=sanitized_profile)
         _emit_gateway_thought(user_id, f'Pipeline complete. Match confidence: {evaluation.match_confidence_score * 100:.0f}%')
@@ -70,6 +72,24 @@ async def register_user(request: RegistrationRequest, background_tasks: Backgrou
         print(f'Warning: Failed to insert user: {e}')
     background_tasks.add_task(process_registration_background, user_id, request)
     return RegistrationResponse(user_id=user_id, status='processing', message='Footprint received. Initiating cognitive analysis.')
+
+@app.post('/api/parse_resume')
+async def parse_resume(file: UploadFile = File(...)):
+    if not file.filename.endswith('.pdf') and not file.filename.endswith('.txt'):
+        raise HTTPException(status_code=400, detail="Only PDF and TXT files are supported")
+    
+    content = await file.read()
+    if file.filename.endswith('.txt'):
+        return {"resume_text": content.decode('utf-8', errors='ignore')}
+    
+    try:
+        reader = pypdf.PdfReader(io.BytesIO(content))
+        text = ""
+        for page in reader.pages:
+            text += page.extract_text() + "\n"
+        return {"resume_text": text}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to parse PDF: {e}")
 
 @app.get('/api/stream/{user_id}')
 async def stream_thought_log(user_id: str):
@@ -198,3 +218,65 @@ async def submit_interview(match_id: str, answers: InterviewAnswers):
     else:
         db.table('matches').update({'status': 'rejected'}).eq('id', match_id).execute()
     return evaluation
+
+class CandidateStatusUpdate(BaseModel):
+    status: str
+
+@app.get('/api/candidates')
+def get_candidates():
+    db = get_supabase()
+    try:
+        users = db.table('users').select('*').execute().data
+        matches = db.table('matches').select('*').execute().data
+        profiles = db.table('profiles').select('*').execute().data
+        
+        candidates = []
+        for u in users:
+            uid = u['id']
+            user_match = next((m for m in matches if m.get('user_id') == uid), None)
+            user_profile = next((p for p in profiles if p.get('user_id') == uid), None)
+            
+            score = user_match.get('match_confidence_score', 0) if user_match else 0
+            status = user_match.get('status', 'processing') if user_match else 'processing'
+            skills = user_profile.get('sanitized_skills', []) if user_profile else []
+            
+            candidates.append({
+                'user_id': uid,
+                'github_username': u.get('github_username', ''),
+                'linkedin_url': u.get('linkedin_url', ''),
+                'skills': skills,
+                'confidence_score': score,
+                'status': status,
+                'created_at': user_match.get('created_at', u.get('created_at', '')) if user_match else u.get('created_at', '')
+            })
+        return candidates
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get('/api/candidates/{user_id}/qa')
+def get_candidate_qa(user_id: str):
+    db = get_supabase()
+    match = db.table('matches').select('id').eq('user_id', user_id).execute().data
+    if not match:
+        return {'questions': [], 'answers': []}
+    match_id = match[0]['id']
+    validation = db.table('validations').select('questions, answers').eq('match_id', match_id).execute().data
+    if not validation:
+        return {'questions': [], 'answers': []}
+    
+    questions = validation[0].get('questions') or []
+    answers = validation[0].get('answers') or []
+    return {'questions': questions, 'answers': answers}
+
+@app.patch('/api/candidates/{user_id}/status')
+def update_candidate_status(user_id: str, payload: CandidateStatusUpdate):
+    db = get_supabase()
+    try:
+        match = db.table('matches').select('id').eq('user_id', user_id).execute().data
+        if match:
+            match_id = match[0]['id']
+            db.table('matches').update({'status': payload.status}).eq('id', match_id).execute()
+            return {'status': 'success'}
+        raise HTTPException(status_code=404, detail='Match not found')
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

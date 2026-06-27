@@ -1,6 +1,6 @@
 import { useState, useEffect, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Code, Briefcase, ArrowRight, CheckCircle, AlertCircle, MessageSquare } from 'lucide-react';
+import { Code, Briefcase, ArrowRight, CheckCircle, AlertCircle, MessageSquare, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const OnboardingPage = () => {
@@ -8,7 +8,9 @@ export const OnboardingPage = () => {
   const navigate = useNavigate();
   const [githubUrl, setGithubUrl] = useState('');
   const [linkedinUrl, setLinkedinUrl] = useState('');
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isParsingResume, setIsParsingResume] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [matchId, setMatchId] = useState<string | null>(null);
   const [questions, setQuestions] = useState<string[]>([]);
@@ -75,6 +77,28 @@ export const OnboardingPage = () => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+    
+    let resumeText = undefined;
+    if (resumeFile) {
+        setIsParsingResume(true);
+        const formData = new FormData();
+        formData.append('file', resumeFile);
+        try {
+            const parseRes = await fetch(`${API_BASE}/api/parse_resume`, {
+                method: 'POST',
+                body: formData
+            });
+            if (parseRes.ok) {
+                const parseData = await parseRes.json();
+                resumeText = parseData.resume_text;
+            } else {
+                console.warn("Failed to parse resume");
+            }
+        } catch (err) {
+            console.warn("Error parsing resume", err);
+        }
+        setIsParsingResume(false);
+    }
 
     const githubUsername = githubUrl.split('/').pop() || githubUrl;
 
@@ -82,7 +106,11 @@ export const OnboardingPage = () => {
       const res = await fetch(`${API_BASE}/api/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ github_username: githubUsername, linkedin_url: linkedinUrl }),
+        body: JSON.stringify({ 
+            github_username: githubUsername, 
+            linkedin_url: linkedinUrl,
+            resume_text: resumeText
+        }),
       });
 
       if (!res.ok) throw new Error('Failed to register.');
@@ -157,11 +185,24 @@ export const OnboardingPage = () => {
               <Briefcase size={18} className="input-icon" />
             </div>
 
+            <div className="form-group">
+              <label className="form-label" htmlFor="resume">Resume (Optional PDF/TXT)</label>
+              <input
+                id="resume"
+                type="file"
+                accept=".pdf,.txt"
+                className="form-input"
+                style={{ paddingTop: '0.6rem', paddingBottom: '0.6rem' }}
+                onChange={(e) => setResumeFile(e.target.files?.[0] || null)}
+              />
+              <FileText size={18} className="input-icon" />
+            </div>
+
             <button type="submit" className="nexus-button" disabled={isLoading || !githubUrl || !linkedinUrl} style={{ width: '100%', marginTop: '1rem' }}>
               {isLoading ? (
                 <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', width: '100%' }}>
                   <div className="skeleton" style={{width: '16px', height: '16px', borderRadius: '50%'}} /> 
-                  Initiating SYNAPSE...
+                  {isParsingResume ? "Parsing Resume..." : "Initiating SYNAPSE..."}
                 </span>
               ) : (
                 <>Initialize Assembly <ArrowRight size={18} /></>

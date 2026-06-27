@@ -57,6 +57,12 @@ export const Navbar = () => {
             >
               Reviews
             </Link>
+            <Link
+              to="/hr-dashboard"
+              className="font-body-md text-body-md text-text-secondary dark:text-on-secondary-fixed-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-200 ease-out"
+            >
+              HR Dashboard
+            </Link>
           </div>
         </div>
         <div className="flex items-center">

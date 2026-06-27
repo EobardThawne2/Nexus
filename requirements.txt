@@ -5,3 +5,5 @@ pydantic
 supabase
 psycopg2-binary
 agentfield
+pypdf
+python-multipart
