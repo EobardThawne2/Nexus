@@ -4,6 +4,7 @@ import { Code, Briefcase, ArrowRight, CheckCircle, AlertCircle, MessageSquare } 
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const OnboardingPage = () => {
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
   const navigate = useNavigate();
   const [githubUrl, setGithubUrl] = useState('');
   const [linkedinUrl, setLinkedinUrl] = useState('');
@@ -25,7 +26,7 @@ export const OnboardingPage = () => {
       if (isFetching) return;
       isFetching = true;
       try {
-        const res = await fetch(`http://localhost:8000/api/user/${userId}/status`);
+        const res = await fetch(`${API_BASE}/api/user/${userId}/status`);
         const data = await res.json();
         if (data.status === 'pending_validation' && data.match_id) {
           setMatchId(data.match_id);
@@ -43,7 +44,7 @@ export const OnboardingPage = () => {
   
   useEffect(() => {
     if (!userId || matchId) return;
-    const es = new EventSource(`http://localhost:8000/api/stream/${userId}`);
+    const es = new EventSource(`${API_BASE}/api/stream/${userId}`);
     es.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (data.step === 'complete') {
@@ -62,7 +63,7 @@ export const OnboardingPage = () => {
 
   const fetchQuestions = async (mId: string) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/interview/${mId}/generate`, { method: 'POST' });
+      const res = await fetch(`${API_BASE}/api/interview/${mId}/generate`, { method: 'POST' });
       const data = await res.json();
       setQuestions(data.questions);
     } catch (err: any) {
@@ -78,7 +79,7 @@ export const OnboardingPage = () => {
     const githubUsername = githubUrl.split('/').pop() || githubUrl;
 
     try {
-      const res = await fetch('http://localhost:8000/api/register', {
+      const res = await fetch(`${API_BASE}/api/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ github_username: githubUsername, linkedin_url: linkedinUrl }),
@@ -98,7 +99,7 @@ export const OnboardingPage = () => {
     if (!matchId) return;
     setIsLoading(true);
     try {
-      const res = await fetch(`http://localhost:8000/api/interview/${matchId}/submit`, {
+      const res = await fetch(`${API_BASE}/api/interview/${matchId}/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ answers })
