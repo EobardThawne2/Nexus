@@ -4,9 +4,9 @@ from agentfield import Agent, AIConfig
 from pydantic import BaseModel
 from typing import Optional
 
-SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://zsedzhjxtfwiwimukxka.supabase.co")
+SUPABASE_URL = os.environ.get("SUPABASE_URL", "")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "")
-NEON_DSN = os.environ.get("NEON_DSN", "postgresql://neondb_owner:npg_2Aq8CkSsKVdf@ep-square-pine-adn6nx5a-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require")
+NEON_DSN = os.environ.get("NEON_DSN", "")
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 
 def _get_neon_conn():

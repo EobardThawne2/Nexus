@@ -5,7 +5,7 @@ from supabase import create_client
 from ai_backend.core import agent, emit_thought
 from ai_backend.schemas import InterviewQuestions, ValidationEvaluation
 
-SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://zsedzhjxtfwiwimukxka.supabase.co")
+SUPABASE_URL = os.environ.get("SUPABASE_URL", "")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "")
 db = create_client(SUPABASE_URL, SUPABASE_KEY)
 
