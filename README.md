@@ -1,39 +1,41 @@
-# Nexus OS v2.0
-**Autonomous Team Assembly Infrastructure**
+# Nexus
+**Intelligent Talent Assembly Platform**
 
-Nexus is a next-generation technical hiring and talent routing infrastructure. It leverages highly specialized AI agents to rigorously analyze candidate profiles, conduct architectural interviews, and instantly route talent based on cryptographic validation.
+Welcome to **Nexus**! Nexus is an advanced platform designed to streamline and elevate the technical hiring process. By leveraging a team of specialized AI agents, Nexus thoughtfully reviews candidate profiles, conducts engaging technical interviews, and efficiently matches top talent with the right opportunities.
 
-## Architecture Overview
+---
 
-The system is designed with a strict separation of concerns, utilizing a high-performance backend to manage agent workloads and a fluid, responsive frontend for the user experience.
+## 🏗️ Architecture Overview
+
+The system is built with a clear separation of concerns, pairing a powerful AI-driven backend with a fast, responsive frontend for an optimal user experience.
 
 ### Backend (Python / FastAPI)
-* **Framework**: FastAPI for asynchronous, non-blocking API endpoints.
-* **Agent Infrastructure**: Powered by AgentField, orchestrating specialized cognitive nodes (Gateway, Synapse, Cortex, Validator).
-* **Database**: Neon (PostgreSQL) for transactional data and Supabase for user authentication and state management.
-* **AI Models**: Integration with external LLM APIs for deep architectural analysis and query generation.
+* **Framework**: [FastAPI](https://fastapi.tiangolo.com/) for lightning-fast, asynchronous API endpoints.
+* **Agent Infrastructure**: Powered by AgentField, orchestrating specialized AI nodes (Gateway, Synapse, Cortex, Validator) to handle complex reasoning.
+* **Database**: [Neon](https://neon.tech/) (Serverless PostgreSQL) for transactional data and [Supabase](https://supabase.com/) for user authentication and state management.
+* **AI Models**: Seamless integration with external LLM APIs (like Groq) for deep architectural analysis and dynamic interview generation.
 
 ### Frontend (React / Vite)
-* **Framework**: React 19 running on Vite for rapid compilation and optimized production builds.
-* **Routing**: React Router DOM for Single Page Application (SPA) navigation.
-* **UI/UX**: Strict, deliberate design system utilizing Vanilla CSS and Framer Motion for premium micro-interactions and layout transitions.
+* **Framework**: React 19 running on Vite for rapid development and highly optimized production builds.
+* **Routing**: React Router DOM for smooth, single-page application (SPA) navigation.
+* **UI/UX**: A clean, deliberate design system using vanilla CSS and Framer Motion for premium micro-interactions and elegant layout transitions.
 
 ---
 
-## Prerequisites
+## 🛠️ Prerequisites
 
-Ensure the following dependencies are installed on your local machine before proceeding:
-* Node.js (v18 or higher)
-* Python (v3.10 or higher)
-* npm or yarn package manager
+Before you begin, make sure you have the following installed on your machine:
+* **Node.js** (v18 or higher)
+* **Python** (v3.10 or higher)
+* **npm** or **yarn** (for managing frontend dependencies)
 
 ---
 
-## Environment Configuration
+## 🔐 Environment Configuration
 
-You will need to configure environment variables for the backend to connect to the required databases and AI services.
+To connect the backend to your databases and AI services, you'll need to set up a few environment variables. 
 
-Create a `.env` file in the root of the project directory with the following structure:
+Create a `.env` file in the root directory of the project and add the following:
 
 ```env
 # Supabase Configuration
@@ -46,31 +48,30 @@ NEON_DSN=your_neon_postgres_connection_string
 # AI Provider Configuration
 GROQ_API_KEY=your_groq_api_key
 ```
-
-*Note: The frontend does not currently require local environment variables as it connects directly to the local backend API.*
+*Note: The frontend connects directly to the local backend API, so it doesn't require its own environment variables during local development.*
 
 ---
 
-## Startup Guide
+## 🚀 Startup Guide
 
-The application requires both the backend API and the frontend client to be running simultaneously.
+To get Nexus up and running locally, you'll need to start both the backend API and the frontend client.
 
-### 1. Initialize the Backend
+### 1. Start the Backend
 
-Open a terminal session, navigate to the root directory of the project, and execute the following commands:
+Open your terminal, navigate to the project root, and run:
 
 ```bash
-# Install Python dependencies
+# Install the required Python dependencies
 pip install -r requirements.txt
 
 # Start the FastAPI server using Uvicorn
 uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 ```
-The backend API will now be available at `http://localhost:8000`.
+Your backend API should now be humming along at `http://localhost:8000`.
 
-### 2. Initialize the Frontend
+### 2. Start the Frontend
 
-Open a separate terminal session, navigate to the frontend directory, and execute the following commands:
+Open a second terminal window, head into the frontend directory, and run:
 
 ```bash
 cd frontend
@@ -78,39 +79,44 @@ cd frontend
 # Install Node.js dependencies
 npm install
 
-# Option A: Start the development server
+# Start the development server
 npm run dev
-
-# Option B: Build and preview the production bundle (Recommended for performance testing)
-npm run build
-npm run preview
 ```
-The frontend client will now be accessible via the URL provided in your terminal (typically `http://localhost:5173` for development or `http://localhost:4173` for preview).
+*(Alternatively, you can run `npm run build` followed by `npm run preview` to test the production bundle).*
+
+Your frontend client will be available at the URL provided in your terminal (usually `http://localhost:5173`).
 
 ---
 
-## Project Structure
+## 📂 Project Structure
+
+Here's a quick look at how the project is organized:
 
 ```text
 Nexus/
 ├── api/
 │   └── main.py                 # FastAPI application entry point and router
 ├── ai_backend/
-│   ├── core.py                 # Core database connections and Agent instantiation
+│   ├── core.py                 # Database connections and Agent setup
 │   ├── orchestrator.py         # Main AI pipeline logic
 │   ├── schemas.py              # Pydantic data validation models
 │   ├── reasoners/              # Cognitive agent logic (Cortex, Synapse, Validator)
-│   └── skills/                 # Agent tools (GitHub/LinkedIn scrapers)
+│   └── skills/                 # Agent tools (e.g., GitHub/LinkedIn scrapers)
 ├── frontend/
 │   ├── src/
-│   │   ├── components/         # Reusable UI components (Navbar, Footer)
-│   │   ├── pages/              # Primary route views (Landing, Dashboard, Onboarding, etc.)
+│   │   ├── components/         # Reusable UI components (Navbar, Footer, etc.)
+│   │   ├── pages/              # Main route views (Landing, Dashboard, Onboarding)
 │   │   ├── App.tsx             # Core routing and transition wrappers
 │   │   └── main.tsx            # React application entry point
 │   ├── index.css               # Global design tokens and styling
-│   └── package.json            # Frontend dependency manifest
-└── requirements.txt            # Python dependency manifest
+│   └── package.json            # Frontend dependency list
+└── requirements.txt            # Python dependency list
 ```
 
-## Security & Telemetry
-Nexus handles sensitive candidate data. Ensure that your `NEON_DSN` and `SUPABASE_KEY` are never committed to version control. The agent thought-logs utilize deterministic state updates; altering the `thought_logs` schema requires corresponding updates to the Server-Sent Events (SSE) streaming logic in `api/main.py`.
+---
+
+## 🛡️ Security & Best Practices
+
+Nexus processes sensitive candidate data, so security is a priority. Please ensure that your `.env` file (containing your `NEON_DSN`, `SUPABASE_KEY`, and `GROQ_API_KEY`) is **never** committed to version control. 
+
+Additionally, the agent thought-logs use deterministic state updates. If you ever need to alter the `thought_logs` schema, remember to update the corresponding Server-Sent Events (SSE) streaming logic in `api/main.py`.
