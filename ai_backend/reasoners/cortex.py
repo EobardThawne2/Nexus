@@ -15,7 +15,7 @@ async def execute_cortex(user_id: str, profile: SynapseSanitizedProfile) -> Cort
     if vacs.data:
         mock_vacancy_id = vacs.data[0]['id']
         required_skills = vacs.data[0].get('required_skills', ['Python', 'FastAPI', 'React'])
-        emit_thought('CORTEX', user_id, f'Found existing vacancy. Required skills: {', '.join(required_skills[:3])}')
+        emit_thought('CORTEX', user_id, f'Found existing vacancy. Required skills: {", ".join(required_skills[:3])}')
     else:
         emit_thought('CORTEX', user_id, 'No vacancies found. Bootstrapping project scaffold...')
         proj = db.table('projects').insert({'name': 'Agentathon Core', 'description': 'Core platform'}).execute()
