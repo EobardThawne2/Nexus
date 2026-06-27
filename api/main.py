@@ -96,7 +96,7 @@ async def stream_thought_log(user_id: str):
                 pass
             await asyncio.sleep(0.8)
             elapsed += 0.8
-        yield f'data: {json.dumps({'step': 'complete', 'agent': 'GATEWAY', 'status': 'Stream timeout.'})}\n\n'
+        yield f'data: {json.dumps({"step": "complete", "agent": "GATEWAY", "status": "Stream timeout."})}\n\n'
     return StreamingResponse(event_generator(), media_type='text/event-stream')
 
 @app.get('/health')
