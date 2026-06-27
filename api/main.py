@@ -21,7 +21,7 @@ from ai_backend.reasoners.validator import generate_questions, evaluate_answers
 app = agent
 app.title = 'Nexus API Gateway'
 app.description = 'Async router for AgentField framework'
-app.add_middleware(CORSMiddleware, allow_origins=['http://localhost:4173', 'http://localhost:5173', 'http://localhost:3000'], allow_credentials=True, allow_methods=['*'], allow_headers=['*'])
+app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_credentials=False, allow_methods=['*'], allow_headers=['*'])
 SUPABASE_URL = os.environ.get('SUPABASE_URL', '')
 SUPABASE_KEY = os.environ.get('SUPABASE_KEY', '')
 
