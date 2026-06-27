@@ -6,14 +6,14 @@ export const LandingPage = () => {
   return (
     <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       
-      {/* Animated Hero Section */}
+      {}
       <motion.div 
         className="hero-section"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
-        {/* Subtle Background Animation */}
+        {}
         <div style={{
           position: 'absolute',
           top: '-50%', left: '-50%', width: '200%', height: '200%',
@@ -34,10 +34,10 @@ export const LandingPage = () => {
         </Link>
       </motion.div>
 
-      {/* Bento Box Grid */}
+      {}
       <div className="bento-grid">
         
-        {/* Feature 1 (Large Span) */}
+        {}
         <motion.div className="bento-item" style={{ gridColumn: 'span 8' }} whileHover={{ scale: 0.995 }}>
           <div>
             <Activity size={28} color="var(--accent-primary)" style={{ marginBottom: '1rem' }} />
@@ -46,7 +46,7 @@ export const LandingPage = () => {
               Our agents ingest raw signals from GitHub and LinkedIn to synthesize a zero-bias, cryptographic map of a developer's true technical capabilities.
             </p>
           </div>
-          {/* Faux UI Graphic */}
+          {}
           <div style={{ marginTop: '2rem', height: '120px', background: 'var(--bg-base)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'flex-end', padding: '1rem', gap: '8px' }}>
              {[40, 70, 45, 90, 60, 80, 50, 85].map((h, i) => (
                 <div key={i} style={{ flex: 1, height: `${h}%`, background: 'var(--border-strong)', borderRadius: '2px' }} />
@@ -54,7 +54,7 @@ export const LandingPage = () => {
           </div>
         </motion.div>
 
-        {/* Feature 2 (Small Span) */}
+        {}
         <motion.div className="bento-item" style={{ gridColumn: 'span 4' }} whileHover={{ scale: 0.995 }}>
           <Search size={28} color="var(--status-success)" style={{ marginBottom: '1rem' }} />
           <h3 style={{ color: 'var(--text-primary)' }}>Gap Analysis</h3>
@@ -63,7 +63,7 @@ export const LandingPage = () => {
           </p>
         </motion.div>
 
-        {/* Feature 3 (Small Span) */}
+        {}
         <motion.div className="bento-item" style={{ gridColumn: 'span 4' }} whileHover={{ scale: 0.995 }}>
           <Network size={28} color="var(--status-warning)" style={{ marginBottom: '1rem' }} />
           <h3 style={{ color: 'var(--text-primary)' }}>Automated Resume Routing</h3>
@@ -72,7 +72,7 @@ export const LandingPage = () => {
           </p>
         </motion.div>
 
-        {/* Feature 4 (Large Span) */}
+        {}
         <motion.div className="bento-item" style={{ gridColumn: 'span 8' }} whileHover={{ scale: 0.995 }}>
           <div>
             <Shield size={28} color="#8b5cf6" style={{ marginBottom: '1rem' }} />

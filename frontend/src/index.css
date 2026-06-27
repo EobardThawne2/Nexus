@@ -1,8 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* Strictly non-vibe-coded, deliberate Stripe/Linear palette */
-  --bg-base: #050505;
+    --bg-base: #050505;
   --bg-surface: #111111;
   --bg-surface-hover: #181818;
   
@@ -51,7 +50,6 @@ body {
   font-size: 14px;
 }
 
-/* Base App Layout */
 .app-container {
   display: flex;
   flex-direction: column;
@@ -67,13 +65,11 @@ body {
   width: 100%;
 }
 
-/* Typography Hierarchy */
 h1 { font-size: 3rem; font-weight: 600; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 1rem; }
 h2 { font-size: 2rem; font-weight: 600; letter-spacing: -0.03em; margin-bottom: 1rem; }
 h3 { font-size: 1.25rem; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 0.5rem; }
 p { color: var(--text-secondary); margin-bottom: 1rem; }
 
-/* Reusable Components */
 .nexus-button {
   display: inline-flex;
   align-items: center;
@@ -117,7 +113,6 @@ p { color: var(--text-secondary); margin-bottom: 1rem; }
   font-size: 15px;
 }
 
-/* Cards & Surface */
 .surface-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
@@ -132,7 +127,6 @@ p { color: var(--text-secondary); margin-bottom: 1rem; }
   box-shadow: var(--shadow-md);
 }
 
-/* Form Elements */
 .form-group {
   margin-bottom: 1.25rem;
   position: relative;
@@ -172,7 +166,6 @@ p { color: var(--text-secondary); margin-bottom: 1rem; }
   pointer-events: none;
 }
 
-/* Navbar */
 .nexus-navbar {
   width: 100%;
   display: flex;
@@ -223,7 +216,6 @@ p { color: var(--text-secondary); margin-bottom: 1rem; }
   color: var(--text-primary);
 }
 
-/* Footer */
 .nexus-footer {
   width: 100%;
   display: flex;
@@ -259,7 +251,6 @@ p { color: var(--text-secondary); margin-bottom: 1rem; }
   color: var(--text-primary);
 }
 
-/* Bento Box Grid */
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -287,7 +278,6 @@ p { color: var(--text-secondary); margin-bottom: 1rem; }
   transform: translateY(-2px);
 }
 
-/* Hero Section */
 .hero-section {
   text-align: center;
   padding: 8rem 2rem 6rem;
@@ -309,7 +299,6 @@ p { color: var(--text-secondary); margin-bottom: 1rem; }
   margin-bottom: 1.5rem;
 }
 
-/* Thought Log (Terminal) */
 .thought-log {
   background: #000000;
   border: 1px solid var(--border-subtle);
@@ -378,7 +367,6 @@ p { color: var(--text-secondary); margin-bottom: 1rem; }
 
 .blink-cursor { animation: blink 1s step-end infinite; color: var(--text-secondary); }
 
-/* Skeleton */
 .skeleton {
   background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 75%);
   background-size: 200% 100%;
@@ -401,7 +389,6 @@ p { color: var(--text-secondary); margin-bottom: 1rem; }
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 @keyframes blink { 50% { opacity: 0; } }
 
-/* Progress */
 .progress-bar-container {
   width: 100%;
   height: 4px;
@@ -416,7 +403,6 @@ p { color: var(--text-secondary); margin-bottom: 1rem; }
   border-radius: 2px;
 }
 
-/* Badges */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -430,7 +416,6 @@ p { color: var(--text-secondary); margin-bottom: 1rem; }
 .badge.success { color: var(--status-success); background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.2); }
 .badge.warning { color: var(--status-warning); background: rgba(234, 179, 8, 0.1); border-color: rgba(234, 179, 8, 0.2); }
 
-/* Table */
 .data-table {
   width: 100%;
   border-collapse: collapse;

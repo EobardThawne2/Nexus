@@ -24,7 +24,7 @@ export const Dashboard = () => {
 
         <div className="bento-grid">
           
-          {/* Match Score */}
+          {}
           <motion.div className="bento-item" style={{ gridColumn: 'span 4' }} variants={itemVariants}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
               <ShieldCheck size={24} color="var(--status-success)" />
@@ -36,7 +36,7 @@ export const Dashboard = () => {
             </div>
           </motion.div>
 
-          {/* Next Steps */}
+          {}
           <motion.div className="bento-item" style={{ gridColumn: 'span 8' }} variants={itemVariants}>
             <div style={{ marginBottom: '1.5rem' }}>
               <h3 style={{ color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -62,7 +62,7 @@ export const Dashboard = () => {
             </div>
           </motion.div>
 
-          {/* Agent Activity */}
+          {}
           <motion.div className="bento-item" style={{ gridColumn: 'span 12' }} variants={itemVariants}>
              <h3 style={{ color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
                 <Terminal size={20} color="var(--text-tertiary)" /> Recent Agent Activity

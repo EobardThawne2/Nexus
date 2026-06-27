@@ -40,7 +40,7 @@ export const OnboardingPage = () => {
     return () => clearInterval(interval);
   }, [userId, matchId]);
 
-  // SSE Thought Log stream
+  
   useEffect(() => {
     if (!userId || matchId) return;
     const es = new EventSource(`http://localhost:8000/api/stream/${userId}`);
@@ -51,7 +51,7 @@ export const OnboardingPage = () => {
         return;
       }
       setThoughtLog(prev => {
-        // Prevent duplicate logs if EventSource replays
+        
         if (prev.some(log => log.status === data.status && log.agent === data.agent)) return prev;
         return [...prev, data];
       });
@@ -106,7 +106,7 @@ export const OnboardingPage = () => {
       const data = await res.json();
       setValidationScore(data.validation_score);
       
-      // Auto redirect to dashboard after 3 seconds
+      
       setTimeout(() => {
         navigate('/dashboard');
       }, 3000);
