@@ -120,7 +120,7 @@ export const OnboardingPage = () => {
   };
 
   return (
-    <div style={{ width: '100%', maxWidth: '480px', margin: '0 auto' }}>
+    <div style={{ width: '100%', maxWidth: '480px', margin: '4rem auto' }}>
       <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
         <h1 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: 'var(--text-primary)' }}>Nexus</h1>
         <p style={{ margin: 0 }}>Autonomous Team Assembly Infrastructure</p>

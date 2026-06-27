@@ -35,7 +35,7 @@ function App() {
   return (
     <div className="app-container">
       <Navbar />
-      <main className="main-content">
+      <main className="flex-1 w-full flex flex-col">
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<PageWrapper><LandingPage /></PageWrapper>} />
